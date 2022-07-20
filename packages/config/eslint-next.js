@@ -19,7 +19,6 @@ module.exports = {
     next: {
       rootDir: [
         'apps/next-app/',
-        'apps/next-next-app/',
         'packages/ui/',
         'packages/config/',
         'packages/tsconfig/',
@@ -31,11 +30,11 @@ module.exports = {
     'import/resolver': {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        project: ['tsconfig.json', 'package/tsconfig.json'],
+        moduleDirectory: ['node_modules', 'src/'],
       },
       typescript: {
         alwaysTryTypes: true,
-        project: ['tsconfig.json', 'package/tsconfig.json'],
+        project: '.',
       },
     },
   },
@@ -43,8 +42,11 @@ module.exports = {
     'no-console': 2,
     'react/function-component-definition': [
       2,
-      { namedComponends: 'arrow-function' },
+      {
+        namedComponents: 'arrow-function',
+      },
     ],
+    '@next/next/no-html-link-for-pages': ['error', './src/pages/'],
   },
   overrides: [
     {
@@ -54,6 +56,12 @@ module.exports = {
       },
       files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
       extends: ['plugin:testing-library/react', 'plugin:jest/recommended'],
+      rules: {
+        'import/no-extraneous-dependencies': [
+          'off',
+          { devDependencies: ['**/?(*.)+(spec|test).[jt]s?(x)'] },
+        ],
+      },
     },
   ],
   ignorePatterns: [
@@ -63,5 +71,6 @@ module.exports = {
     '.turbo',
     '.next',
     'public',
+    'coverage',
   ],
 }
